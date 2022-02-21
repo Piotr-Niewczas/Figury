@@ -53,3 +53,4 @@ enum class Polecenia
 
 };
 Polecenia zamienPolecenie(std::string in);
+void PrintError(std::string text);

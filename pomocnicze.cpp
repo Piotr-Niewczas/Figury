@@ -89,7 +89,6 @@ void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*') {
 	UstawZnak(pkt.x(), pkt.y(), Kolor, Znak);
 }
 
-
 /// <summary>
 /// Algorytm Bresenhama rysowania linii miêdzy punktami 
 /// </summary>
@@ -148,4 +147,13 @@ Polecenia zamienPolecenie(std::string in) {
 	else if (in == "PRZESUN") return Polecenia::przesun;
 	else if (in == "ZAMKNIJ" || in == "ZAKONCZ" || in == "EXIT") return Polecenia::zamknijprogram;
 	return Polecenia::niepoprawne;
+}
+
+void PrintError(std::string text) {
+	UstawKursor(0, KonsolaY() - 1);
+	std::cout << "\u001b[0;101m\a Error: " << text;
+	getchar();
+	printf("\033[A");
+	printf("\33[2K\r");
+	std::cout << "\u001b[0m";
 }

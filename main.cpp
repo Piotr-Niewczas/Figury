@@ -5,22 +5,8 @@
 #include <vector>
 #include "figury.h"
 
-
 //dom rozmiar okna 120x30 znaków
 
-
-
-
-
-
-void PrintError(std::string text) {
-	UstawKursor(0, KonsolaY() - 1);
-	std::cout << "\u001b[0;101m\a Error: " << text;
-	getchar();
-	printf("\033[A");
-	printf("\33[2K\r");
-	std::cout << "\u001b[0m";
-}
 
 void NarysyjGornyPasek(std::vector<Figura*> _figury, std::vector<std::string> _figuryNazwy, int _wybranaFigura) {
 	UstawKursor(0, 0);
