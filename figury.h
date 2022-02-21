@@ -5,25 +5,33 @@
 
 class Figura {
 private:
-	int _numer = 0;
+	int numer = 0;
+	char znakLinii = '*', znakWierzch = '#';		// Znakwierzch / œrodka ko³a
+	int kolorLinii = 0, kolorWierzch = 0;			// domyœlny bia³y
+	bool czyRysowano = false;
 public:
 	virtual void Narysuj(int trybRysowania = 0) = 0;
 	void Ukryj();
 	void Wyszarz();
 	virtual int PrzesunCaly(int dx, int dy) = 0;
 	virtual void Losuj() = 0;
-	char _znakLinii = '*', _znakWierzch = '#';		// Znakwierzch / œrodka ko³a
-	int _kolorLinii = 0, _kolorWierzch = 0;			// domyœlny bia³y
-	std::string _nazwa;
+	char ZnakLinii();
+	char ZnakWierzch();
+	int KolorLinii();
+	int KolorWierzch();
+	void SetKolorLinii(int kolor);
+	void SetKolorWierzch(int kolor);
+	std::string nazwa;
 	int GetNumer();
 	void SetNumer(int nowyNr);
-	bool _czyRysowano = false;
+	bool CzyRysowano();
+	void SetCzyRysowano(bool czyRysowano);
 };
 
 class Wielokat : public Figura {
 protected:
-	std::vector<Punkt> _punkty;
-	int _ileWierzch = 0;
+	std::vector<Punkt> punkty;
+	int ileWierzch = 0;
 public:
 	Punkt GetPunkt(int index);
 	int SetPunkt(int index, int x, int y);
@@ -37,7 +45,6 @@ public:
 	Trojkat();
 	Trojkat(int numer);
 	Trojkat(Punkt A, Punkt B, Punkt C, int numer);
-	Trojkat(Punkt Punkty[3], int numer) : Trojkat(Punkty[0], Punkty[1], Punkty[2], numer) {};
 
 	void WyroznijPunkt(Punkt pkt);
 	void Losuj() override;
@@ -56,9 +63,9 @@ public:
 		// okr¹g
 
 class Okrag : public Figura {
-protected:
-	int _promien;
-	Punkt _srodek;
+private:
+	int promien;
+	Punkt srodek;
 public:
 	Okrag();
 	Okrag(int numer);

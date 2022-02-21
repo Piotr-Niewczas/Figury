@@ -41,25 +41,25 @@ void NarysujDolnyPasek(int _wybranaFigura) {
 	}
 }
 
-void LosujFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury, int _wybranaFigura) {
-	if (_komendy.size() == 2 && _komendy[1] == "*")
+void LosujFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury, int wybranaFigura) {
+	if (komendy.size() == 2 && komendy[1] == "*")
 	{
-		for (int i = 0; i < _figury.size(); i++)
+		for (int i = 0; i < figury.size(); i++)
 		{
-			_figury[i]->Losuj();
+			figury[i]->Losuj();
 		}
-		for (int i = 0; i < _figury.size(); i++)
+		for (int i = 0; i < figury.size(); i++)
 		{
-			_figury[i]->Narysuj();
+			figury[i]->Narysuj();
 		}
 
 	}
-	else if (_wybranaFigura > -1)
+	else if (wybranaFigura > -1)
 	{
-		_figury[_wybranaFigura]->Losuj();
-		for (int i = 0; i < _figury.size(); i++)
+		figury[wybranaFigura]->Losuj();
+		for (int i = 0; i < figury.size(); i++)
 		{
-			_figury[i]->Narysuj();
+			figury[i]->Narysuj();
 		}
 	}
 	else
@@ -67,15 +67,15 @@ void LosujFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figur
 		PrintError("Nie wybrano figury!");
 	}
 }
-void WybierzFigure(std::vector<std::string> _komendy, std::vector<Figura*> _figury, int& _wybranaFigura) {
-	if (_komendy.size() == 2 && _komendy[1] != "*")
+void WybierzFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury, int& wybranaFigura) {
+	if (komendy.size() == 2 && komendy[1] != "*")
 	{
 		try
 		{
-			int temp = stoi(_komendy[1]);
-			if (temp > -1 && temp < _figury.size())
+			int temp = stoi(komendy[1]);
+			if (temp > -1 && temp < figury.size())
 			{
-				_wybranaFigura = temp;
+				wybranaFigura = temp;
 			}
 			else
 			{
@@ -92,76 +92,76 @@ void WybierzFigure(std::vector<std::string> _komendy, std::vector<Figura*> _figu
 		PrintError("Zly argument!");
 	}
 }
-void UtworzFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury, std::vector<std::string>& _figuryNazwy) {
-	if (_komendy.size() >= 2)
+void UtworzFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury, std::vector<std::string>& figuryNazwy) {
+	if (komendy.size() >= 2)
 	{
-		if (_figury.size() == 6)
+		if (figury.size() == 6)
 		{
 			PrintError("Maksymalna ilosc figur!");
 		}
 		else
 		{
-			if (_komendy[1] == "T")
+			if (komendy[1] == "T")
 			{
-				Trojkat* t = new Trojkat(_figury.size());
-				_figury.push_back(t);
-				_figuryNazwy.push_back(t->_nazwa);
+				Trojkat* t = new Trojkat(figury.size());
+				figury.push_back(t);
+				figuryNazwy.push_back(t->nazwa);
 			}
-			else if (_komendy[1] == "O")
+			else if (komendy[1] == "O")
 			{
-				Okrag* o = new Okrag(_figury.size());
-				_figury.push_back(o);
-				_figuryNazwy.push_back(o->_nazwa);
+				Okrag* o = new Okrag(figury.size());
+				figury.push_back(o);
+				figuryNazwy.push_back(o->nazwa);
 			}
-			else if (_komendy[1] == "P")
+			else if (komendy[1] == "P")
 			{
-				Prostokat* p = new Prostokat(_figury.size());
-				_figury.push_back(p);
-				_figuryNazwy.push_back(p->_nazwa);
+				Prostokat* p = new Prostokat(figury.size());
+				figury.push_back(p);
+				figuryNazwy.push_back(p->nazwa);
 			}
 			else
 			{
 				PrintError("Niepoprawny typ figury!");
 			}
 
-			if (_komendy.size() == 3 && _komendy[2] == "L")
+			if (komendy.size() == 3 && komendy[2] == "L")
 			{
-				_figury[_figury.size() - 1]->Losuj();
-				_figury[_figury.size() - 1]->Narysuj();
+				figury[figury.size() - 1]->Losuj();
+				figury[figury.size() - 1]->Narysuj();
 			}
 		}
 		
 	}
 }
-void UsunFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury, std::vector<std::string>& _figuryNazwy, int& _wybranaFigura) {
-	for (int i = 0; i < _figury.size(); i++)
+void UsunFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury, std::vector<std::string>& figuryNazwy, int& _wybranaFigura) {
+	for (int i = 0; i < figury.size(); i++)
 	{
-		_figury[i]->Ukryj();
+		figury[i]->Ukryj();
 	}
 
-	if (_komendy.size() == 1 && _wybranaFigura > -1)
+	if (komendy.size() == 1 && _wybranaFigura > -1)
 	{
-		Figura* f = _figury[_wybranaFigura];
+		Figura* f = figury[_wybranaFigura];
 		delete f;
 		f = NULL;
-		_figury.erase(_figury.begin() + _wybranaFigura);
-		_figuryNazwy.erase(_figuryNazwy.begin() + _wybranaFigura);
-		for (int i = 0; i < _figury.size(); i++)
+		figury.erase(figury.begin() + _wybranaFigura);
+		figuryNazwy.erase(figuryNazwy.begin() + _wybranaFigura);
+		for (int i = 0; i < figury.size(); i++)
 		{
-			_figury[i]->SetNumer(i);
+			figury[i]->SetNumer(i);
 		}
 		_wybranaFigura = -1;
 	}
-	else if (_komendy.size() == 2)
+	else if (komendy.size() == 2)
 	{
-		if (_komendy[1] == "*") // usun wszystko
+		if (komendy[1] == "*") // usun wszystko
 		{
-			for (auto p : _figury)
+			for (auto p : figury)
 			{
 				delete p;
 			}
-			_figury.clear();
-			_figuryNazwy.clear();
+			figury.clear();
+			figuryNazwy.clear();
 			_wybranaFigura = -1;
 		}
 	}
@@ -169,26 +169,26 @@ void UsunFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury
 	{
 		PrintError("Niepoprawny argument!");
 	}
-	for (int i = 0; i < _figury.size(); i++)
+	for (int i = 0; i < figury.size(); i++)
 	{
-		_figury[i]->Narysuj();
+		figury[i]->Narysuj();
 	}
 }
-void PrzesunFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury, int _wybranaFigura) {
-	for (int i = 0; i < _figury.size(); i++)
+void PrzesunFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury, int wybranaFigura) {
+	for (int i = 0; i < figury.size(); i++)
 	{
-		_figury[i]->Ukryj();
+		figury[i]->Ukryj();
 	}
-	if (_wybranaFigura > -1)
+	if (wybranaFigura > -1)
 	{
-		if (_komendy.size() == 3)
+		if (komendy.size() == 3)
 		{
 			try
 			{
-				int dx = stoi(_komendy[1]);
-				int dy = stoi(_komendy[2]);
+				int dx = stoi(komendy[1]);
+				int dy = stoi(komendy[2]);
 
-				if (_figury[_wybranaFigura]->PrzesunCaly(dx, dy) == -1)
+				if (figury[wybranaFigura]->PrzesunCaly(dx, dy) == -1)
 				{
 					PrintError("Nie udalo sie przsunac / figura wychodzi poza zakres");
 				}
@@ -204,9 +204,9 @@ void PrzesunFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _fig
 		}
 	}
 	else PrintError("Nie wybrano figury!");
-	for (int i = 0; i < _figury.size(); i++)
+	for (int i = 0; i < figury.size(); i++)
 	{
-		_figury[i]->Narysuj();
+		figury[i]->Narysuj();
 	}
 }
 
@@ -216,54 +216,54 @@ int main()
 	std::cout << "\u001b[0m";
 	srand(time(NULL));
 	
-	std::vector<Figura*> _figury;
-	std::vector<std::string> _figuryNazwy;
-	int _wybranaFigura = -1;
+	std::vector<Figura*> figury;
+	std::vector<std::string> figuryNazwy;
+	int wybranaFigura = -1;
 
 	while (true)
 	{
 		
-		NarysyjGornyPasek(_figury, _figuryNazwy, _wybranaFigura);
-		NarysujDolnyPasek(_wybranaFigura);
+		NarysyjGornyPasek(figury, figuryNazwy, wybranaFigura);
+		NarysujDolnyPasek(wybranaFigura);
 
-		std::vector<std::string> _komendy;
+		std::vector<std::string> komendy;
 		{ // przetwarzanie wejścia na vektor _komendy
-			std::string _rawIn;
-			getline(std::cin, _rawIn);
+			std::string rawIn;
+			getline(std::cin, rawIn);
 
-			std::stringstream _in(_rawIn);
-			std::string _segment;
+			std::stringstream in(rawIn);
+			std::string segment;
 
-			while (std::getline(_in, _segment, ' '))
+			while (std::getline(in, segment, ' '))
 			{
-				_komendy.push_back(_segment);
+				komendy.push_back(segment);
 			}
 		}
 		std::cout << "\u001b[0m";
-		if (_komendy.size() > 0)
+		if (komendy.size() > 0)
 		{
-			switch (zamienPolecenie(_komendy[0]))
+			switch (zamienPolecenie(komendy[0]))
 			{
 			case Polecenia::niepoprawne:
 				PrintError("Nieznane polecenie");
 				break;	
 			case Polecenia::przesun:
-				PrzesunFigure(_komendy, _figury, _wybranaFigura);
+				PrzesunFigure(komendy, figury, wybranaFigura);
 				break;
 			case Polecenia::los:
-				LosujFigure(_komendy,_figury,_wybranaFigura);
+				LosujFigure(komendy,figury,wybranaFigura);
 				break;	
 			case Polecenia::wybierz:
-				WybierzFigure(_komendy, _figury, _wybranaFigura);
+				WybierzFigure(komendy, figury, wybranaFigura);
 				break;
 			case Polecenia::utworz:
-				UtworzFigure(_komendy, _figury, _figuryNazwy);
+				UtworzFigure(komendy, figury, figuryNazwy);
 				break;	
 			case Polecenia::usun:
-				UsunFigure(_komendy, _figury, _figuryNazwy, _wybranaFigura);
+				UsunFigure(komendy, figury, figuryNazwy, wybranaFigura);
 				break;
 			case Polecenia::trybogolny:
-				_wybranaFigura = -1;
+				wybranaFigura = -1;
 				break;
 			case Polecenia::zamknijprogram:
 				std::cout << "\u001b[0m" << std::endl;

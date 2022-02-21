@@ -21,17 +21,17 @@ void ClearLine() {
 	printf("\33[2K\r");
 }
 
-int Punkt::x() { return _x; }
-int Punkt::y() { return _y; }
+int Punkt::X() { return x; }
+int Punkt::Y() { return y; }
 Punkt::Punkt(int X, int Y) 
 {
-	_x = X;
-	_y = Y;
+	x = X;
+	y = Y;
 }
 Punkt::Punkt() 
 {
-	_x = NULL;
-	_y = NULL;
+	x = NULL;
+	y = NULL;
 }
 /// <summary>
 /// Przesuwa punkt bez sprawdzania czy wartosci sa w poprawnym zakresie
@@ -40,8 +40,8 @@ Punkt::Punkt()
 /// <param name="dy"> Przesuniêcie na osi Y </param>
 void Punkt::Przesun(int dx, int dy)
 {
-	_x += dx;
-	_y += dy;
+	x += dx;
+	y += dy;
 }
 /// <summary>
 /// Ustawia punkt w nowe miejsce bez sprawdzania poprawnosci wartosci
@@ -49,8 +49,8 @@ void Punkt::Przesun(int dx, int dy)
 /// <param name="x"></param>
 /// <param name="y"></param>
 void Punkt::Ustaw(int x, int y) {
-	_x = x;
-	_y = y;
+	x = x;
+	y = y;
 }
 
 /// <summary>
@@ -86,7 +86,7 @@ void UstawZnak(int x, int y, int Kolor, char Znak = '*') {
 /// <param name="Kolor">(opc) Kod ANSI koloru w którym znak ma byæ wstawiony</param>
 /// <param name="Znak">(opc) Znak do wstawienia</param>
 void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*') {
-	UstawZnak(pkt.x(), pkt.y(), Kolor, Znak);
+	UstawZnak(pkt.X(), pkt.Y(), Kolor, Znak);
 }
 
 /// <summary>
@@ -100,8 +100,8 @@ void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*') {
 /// <param name="znakLinii">(opc) Znak Linii</param>
 void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0, char znakWierzch = '*', char znakLinii = '*')
 {
-	int x0 = A.x(), y0 = A.y();
-	int x1 = B.x(), y1 = B.y();
+	int x0 = A.X(), y0 = A.Y();
+	int x1 = B.X(), y1 = B.Y();
 
 	int dx = abs(x1 - x0);
 	int sx = x0 < x1 ? 1 : -1;

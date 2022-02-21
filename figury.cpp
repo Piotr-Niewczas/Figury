@@ -4,28 +4,50 @@
 
 void Figura::Ukryj() { std::cout << "\u001b[0m"; Narysuj(-1); }
 void Figura::Wyszarz() { Narysuj(1); }
-int Figura::GetNumer() { return _numer; }
+int Figura::GetNumer() { return numer; }
 void Figura::SetNumer(int nowyNr) {
-	_numer = nowyNr;
-	_kolorWierzch = 31 + nowyNr;
-	_kolorLinii = 91 + nowyNr;
+	numer = nowyNr;
+	SetKolorWierzch(31 + nowyNr);
+	SetKolorLinii(91 + nowyNr);
 }
-
-
+char Figura::ZnakLinii() {
+	return znakLinii;
+}
+char Figura::ZnakWierzch() {
+	return znakWierzch;
+}
+int Figura::KolorLinii() {
+	return kolorLinii;
+}
+int Figura::KolorWierzch() {
+	return kolorWierzch;
+}
+void Figura::SetKolorLinii(int kolor) {
+	kolorLinii = kolor;
+}
+void Figura::SetKolorWierzch(int kolor) {
+	kolorWierzch = kolor;
+}
+bool Figura::CzyRysowano() {
+	return czyRysowano;
+}
+void Figura::SetCzyRysowano(bool czyRysowano) {
+	this->czyRysowano = czyRysowano;
+}
 		// Wielok¹t
 
-int Wielokat::GetWierzch() { return _ileWierzch; };
+int Wielokat::GetWierzch() { return ileWierzch; };
 /// <summary>
 /// Zwraca Punkt z wielok¹ta o wskazanym indeksie
 /// </summary>
 /// <param name="index">Indeks punktu w wielok¹cie</param>
 /// <returns>Wspó³¿edne punktu, lub (-1,-1) je¿eli index poza zakresem</returns>
 Punkt Wielokat::GetPunkt(int index) {
-	if (index >= 0 && index < _ileWierzch) // sprawdza czy ¿¹dany punkt istnieje
+	if (index >= 0 && index < ileWierzch) // sprawdza czy ¿¹dany punkt istnieje
 	{
 		return Punkt(-1, -1);
 	}
-	return _punkty[index];
+	return punkty[index];
 
 }
 /// <summary>
@@ -39,7 +61,7 @@ int Wielokat::SetPunkt(int index, int x, int y) {
 	if (CzyWZakresieOkna(x, y))
 	{
 		Ukryj();
-		_punkty[index].Ustaw(x, y);
+		punkty[index].Ustaw(x, y);
 		Narysuj();
 		return 0;
 	}
@@ -53,16 +75,16 @@ int Wielokat::SetPunkt(int index, int x, int y) {
 /// <returns>0 je¿eli uda³o siê przesun¹æ, -1 je¿eli nie mo¿na przesun¹æ</returns>
 int Wielokat::PrzesunCaly(int dx, int dy) {
 
-	for (int i = 0; i < _ileWierzch; i++)
+	for (int i = 0; i < ileWierzch; i++)
 	{
-		int finalX = _punkty[i].x() + dx;
-		int finalY = _punkty[i].y() + dy;
+		int finalX = punkty[i].X() + dx;
+		int finalY = punkty[i].Y() + dy;
 		if (!CzyWZakresieOkna(finalX, finalY)) return -1; // je¿eli wspó³rzedne poza zakresem, zwróæ -1
 	}
-	for (int i = 0; i < _ileWierzch; i++)
+	for (int i = 0; i < ileWierzch; i++)
 	{
 		Ukryj();
-		_punkty[i].Przesun(dx, dy); // przesuwa punkty
+		punkty[i].Przesun(dx, dy); // przesuwa punkty
 		Narysuj();
 	}
 	return 0;
@@ -72,9 +94,9 @@ int Wielokat::PrzesunCaly(int dx, int dy) {
 /// </summary>
 /// <param name="trybRysowania">0 - normalny, 1 - szary, -1 - ukryj</param>
 void Wielokat::Narysuj(int trybRysowania) {
-	_czyRysowano = true;
-	int KW = _kolorWierzch, KL = _kolorLinii; // kopia wartoœci kolorów
-	char ZW = _znakWierzch, ZL = _znakLinii;
+	SetCzyRysowano(true);
+	int KW = KolorWierzch(), KL = KolorLinii(); // kopia wartoœci kolorów
+	char ZW = ZnakWierzch(), ZL = ZnakLinii();
 	if (trybRysowania == 1)
 	{
 		KW = szary, KL = szary; // je¿eli wielok¹t ma byæ przeciemniony, zamieñ kolory na szary
@@ -87,27 +109,27 @@ void Wielokat::Narysuj(int trybRysowania) {
 		KL = 0;
 	}
 
-	for (int i = 0; i < (_ileWierzch - 1); i++)
+	for (int i = 0; i < (ileWierzch - 1); i++)
 	{
-		NarysujLinie(_punkty[i], _punkty[i + 1], KW, KL, ZW, ZL);
+		NarysujLinie(punkty[i], punkty[i + 1], KW, KL, ZW, ZL);
 	}
-	NarysujLinie(_punkty[_ileWierzch - 1], _punkty[0], KW, KL, ZW, ZL);
+	NarysujLinie(punkty[ileWierzch - 1], punkty[0], KW, KL, ZW, ZL);
 }
 
 		// Trojk¹t
 
 Trojkat::Trojkat() {
-	_ileWierzch = 3;
-	_nazwa = "Trojkat";
+	ileWierzch = 3;
+	nazwa = "Trojkat";
 }
 Trojkat::Trojkat(int numer) : Trojkat()
 {
 	SetNumer(numer);
 }
 Trojkat::Trojkat(Punkt A, Punkt B, Punkt C, int numer) : Trojkat(numer) {
-	_punkty.push_back(A);
-	_punkty.push_back(B);
-	_punkty.push_back(C);
+	punkty.push_back(A);
+	punkty.push_back(B);
+	punkty.push_back(C);
 };
 
 void Trojkat::WyroznijPunkt(Punkt pkt) {
@@ -118,22 +140,22 @@ void Trojkat::WyroznijPunkt(Punkt pkt) {
 /// Losuje trojkat, nie wyœwietla go, ukrywa poprzedni je¿eli istnia³
 /// </summary>
 void Trojkat::Losuj() {
-	if (_czyRysowano)
+	if (CzyRysowano())
 	{
 		Ukryj();
 	}
-	if (_punkty.size() == 3)
+	if (punkty.size() == 3)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0, 1);
+			punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0, 1);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0, 1));
+			punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0, 1));
 		}
 	}
 
@@ -142,24 +164,24 @@ void Trojkat::Losuj() {
 		// prostok¹t
 
 Prostokat::Prostokat() {
-	_nazwa = "Prostokat";
-	_ileWierzch = 4;
+	nazwa = "Prostokat";
+	ileWierzch = 4;
 }
 Prostokat::Prostokat(int numer) : Prostokat() {
 	SetNumer(numer);
 }
 Prostokat::Prostokat(Punkt gpPunkt, int dx, int dy, int numer) : Prostokat(numer) {
-	_punkty.push_back(gpPunkt);
-	_punkty.push_back(Punkt(gpPunkt.x() + dx, gpPunkt.y()));
-	_punkty.push_back(Punkt(gpPunkt.x() + dx, gpPunkt.y() + dy));
-	_punkty.push_back(Punkt(gpPunkt.x(), gpPunkt.y() + dy));
+	punkty.push_back(gpPunkt);
+	punkty.push_back(Punkt(gpPunkt.X() + dx, gpPunkt.Y()));
+	punkty.push_back(Punkt(gpPunkt.X() + dx, gpPunkt.Y() + dy));
+	punkty.push_back(Punkt(gpPunkt.X(), gpPunkt.Y() + dy));
 }
 
 /// <summary>
 /// Losuje Prostok¹t, ukrywa i usuje obecny je¿eli ju¿ istnieje, nie rusyje nowego
 /// </summary>
 void Prostokat::Losuj() {
-	if (_czyRysowano) // ukryj prostok¹t je¿eli istnieje
+	if (CzyRysowano()) // ukryj prostok¹t je¿eli istnieje
 	{
 		Ukryj();
 	}
@@ -170,27 +192,27 @@ void Prostokat::Losuj() {
 	do
 	{
 		pktStart = LosPunkt(KonsolaX() - 30, KonsolaY() - 20, 0, 1);
-		int maxDx = KonsolaX() - pktStart.x();
-		int maxDy = KonsolaY() - pktStart.y();
-		dx = pktStart.x() + 2 + rand() % (maxDx - 2);
-		dy = pktStart.y() + 2 + rand() % (maxDy - 2);
+		int maxDx = KonsolaX() - pktStart.X();
+		int maxDy = KonsolaY() - pktStart.Y();
+		dx = pktStart.X() + 2 + rand() % (maxDx - 2);
+		dy = pktStart.Y() + 2 + rand() % (maxDy - 2);
 
-		gotowe = CzyWZakresieOkna(pktStart.x() + dx, pktStart.y() + dy);
+		gotowe = CzyWZakresieOkna(pktStart.X() + dx, pktStart.Y() + dy);
 	} while (!gotowe);
 
-	if (_punkty.size() == 4)
+	if (punkty.size() == 4)
 	{
-		_punkty[0] = pktStart;
-		_punkty[1] = Punkt(pktStart.x() + dx, pktStart.y());
-		_punkty[2] = Punkt(pktStart.x() + dx, pktStart.y() + dy);
-		_punkty[3] = Punkt(pktStart.x(), pktStart.y() + dy);
+		punkty[0] = pktStart;
+		punkty[1] = Punkt(pktStart.X() + dx, pktStart.Y());
+		punkty[2] = Punkt(pktStart.X() + dx, pktStart.Y() + dy);
+		punkty[3] = Punkt(pktStart.X(), pktStart.Y() + dy);
 	}
 	else
 	{
-		_punkty.push_back(pktStart);
-		_punkty.push_back(Punkt(pktStart.x() + dx, pktStart.y()));
-		_punkty.push_back(Punkt(pktStart.x() + dx, pktStart.y() + dy));
-		_punkty.push_back(Punkt(pktStart.x(), pktStart.y() + dy));
+		punkty.push_back(pktStart);
+		punkty.push_back(Punkt(pktStart.X() + dx, pktStart.Y()));
+		punkty.push_back(Punkt(pktStart.X() + dx, pktStart.Y() + dy));
+		punkty.push_back(Punkt(pktStart.X(), pktStart.Y() + dy));
 	}
 
 
@@ -198,7 +220,7 @@ void Prostokat::Losuj() {
 
 Okrag::Okrag()
 {
-	_nazwa = "Okrag";
+	nazwa = "Okrag";
 }
 Okrag::Okrag(int numer) : Okrag() {
 	SetNumer(numer);
@@ -210,8 +232,8 @@ Okrag::Okrag(int numer) : Okrag() {
 /// <param name="promien">Promieñ</param>
 /// <param name="numer">Unikalny numer figury</param>
 Okrag::Okrag(Punkt srodek, int promien, int numer) : Okrag(numer) {
-	_srodek = srodek;
-	_promien = promien;
+	this->srodek = srodek;
+	this->promien = promien;
 };
 
 /// <summary>
@@ -219,12 +241,12 @@ Okrag::Okrag(Punkt srodek, int promien, int numer) : Okrag(numer) {
 /// </summary>
 /// <param name="trybRysowania">0 - normalny, 1 - szary, -1 - ukryj</param>
 void Okrag::Narysuj(int trybRysowania) {
-	_czyRysowano = true;
-	int x = _promien;
+	SetCzyRysowano(true);
+	int x = promien;
 	int y = 0, err = 0;
 
-	int KW = _kolorWierzch, KL = _kolorLinii; // kopia wartoœci kolorów
-	char ZW = _znakWierzch, ZL = _znakLinii;
+	int KW = KolorWierzch(), KL = KolorLinii(); // kopia wartoœci kolorów
+	char ZW = ZnakWierzch(), ZL = ZnakLinii();
 	if (trybRysowania == 1)
 	{
 		KW = szary, KL = szary; // je¿eli okrag ma byæ przeciemniony, zamieñ kolory na szary
@@ -237,14 +259,14 @@ void Okrag::Narysuj(int trybRysowania) {
 
 	while (x >= y)
 	{
-		UstawZnak(_srodek.x() + x, _srodek.y() + y, KL, ZL);
-		UstawZnak(_srodek.x() + y, _srodek.y() + x, KL, ZL);
-		UstawZnak(_srodek.x() - x, _srodek.y() + y, KL, ZL);
-		UstawZnak(_srodek.x() - y, _srodek.y() + x, KL, ZL);
-		UstawZnak(_srodek.x() - x, _srodek.y() - y, KL, ZL);
-		UstawZnak(_srodek.x() - y, _srodek.y() - x, KL, ZL);
-		UstawZnak(_srodek.x() + x, _srodek.y() - y, KL, ZL);
-		UstawZnak(_srodek.x() + y, _srodek.y() - x, KL, ZL);
+		UstawZnak(srodek.X() + x, srodek.Y() + y, KL, ZL);
+		UstawZnak(srodek.X() + y, srodek.Y() + x, KL, ZL);
+		UstawZnak(srodek.X() - x, srodek.Y() + y, KL, ZL);
+		UstawZnak(srodek.X() - y, srodek.Y() + x, KL, ZL);
+		UstawZnak(srodek.X() - x, srodek.Y() - y, KL, ZL);
+		UstawZnak(srodek.X() - y, srodek.Y() - x, KL, ZL);
+		UstawZnak(srodek.X() + x, srodek.Y() - y, KL, ZL);
+		UstawZnak(srodek.X() + y, srodek.Y() - x, KL, ZL);
 
 		if (err <= 0)
 		{
@@ -257,14 +279,14 @@ void Okrag::Narysuj(int trybRysowania) {
 			err -= 2 * x + 1;
 		}
 	}
-	UstawZnak(_srodek, KW, ZW);
+	UstawZnak(srodek, KW, ZW);
 }
 /// <summary>
 /// Sprawdza czy podany okr¹g nie wychodzi z zakresu
 /// </summary>
 bool Okrag::CzySieMiesci(Punkt sr, int r) {
 
-	if (CzyWZakresieOkna(sr.x() + r, sr.y() - r) && CzyWZakresieOkna(sr.x() - r, sr.y() + r))
+	if (CzyWZakresieOkna(sr.X() + r, sr.Y() - r) && CzyWZakresieOkna(sr.X() - r, sr.Y() + r))
 	{
 		return true;
 	}
@@ -277,12 +299,12 @@ bool Okrag::CzySieMiesci(Punkt sr, int r) {
 /// <param name="dy"> Przesuniêcie œrodka Y na osi </param>
 /// <returns>0 je¿eli uda³o siê przesun¹æ, -1 je¿eli nie mo¿na przesun¹æ</returns>
 int Okrag::PrzesunCaly(int dx, int dy) {
-	int finalX = _srodek.x() + dx;
-	int finalY = _srodek.y() + dy;
-	if (CzySieMiesci(Punkt(finalX, finalY), _promien))
+	int finalX = srodek.X() + dx;
+	int finalY = srodek.Y() + dy;
+	if (CzySieMiesci(Punkt(finalX, finalY), promien))
 	{
 		Ukryj();
-		_srodek.Ustaw(finalX, finalY);
+		srodek.Ustaw(finalX, finalY);
 		Narysuj();
 		return 0;
 	}
@@ -292,15 +314,15 @@ int Okrag::PrzesunCaly(int dx, int dy) {
 /// Losuje okr¹g
 /// </summary>
 void Okrag::Losuj() {
-	if (_czyRysowano) // jezeli okrag istnieje
+	if (CzyRysowano()) // jezeli okrag istnieje
 	{
 		Ukryj();
 	}
 
 	do // potwarzaj dopóki wylosowany okr¹g nie bêdzie w poprawnym zakresie
 	{
-		_srodek = LosPunkt(KonsolaX() - 20, KonsolaY() - 10, 0, 1);
-		_promien = 2 + (rand() % ((KonsolaY() / 2) - 2 + 1));
-	} while (!CzySieMiesci(_srodek, _promien));
+		srodek = LosPunkt(KonsolaX() - 20, KonsolaY() - 10, 0, 1);
+		promien = 2 + (rand() % ((KonsolaY() / 2) - 2 + 1));
+	} while (!CzySieMiesci(srodek, promien));
 
 }

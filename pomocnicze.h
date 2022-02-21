@@ -22,11 +22,11 @@ enum Kolory {
 class Punkt
 {
 private:
-	int _x;
-	int _y;
+	int x;
+	int y;
 public:
-	int x();
-	int y();
+	int X();
+	int Y();
 	Punkt(int X, int Y);
 	Punkt();
 	
