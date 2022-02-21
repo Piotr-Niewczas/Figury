@@ -9,20 +9,20 @@
 
 //dom rozmiar okna 120x30 znaków
 
-#define MIN_X 0
-#define MIN_Y 1
-#define FIGUR_MAX 6
 
-//using namespace std;
-int KonsolaX = 120, KonsolaY = 30; // rozmiar okna konsoli
-
-void PoznajWymiaryKonsoli() {
+int KonsolaX() {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	KonsolaX = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-	KonsolaY = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+	return (csbi.srWindow.Right - csbi.srWindow.Left + 1);
 }
+int KonsolaY() {
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return (csbi.srWindow.Bottom - csbi.srWindow.Top + 1);
+} 
+
 void ClearLine() {
 	/*printf("\r");
 	printf(" ");
@@ -88,7 +88,7 @@ public:
 /// <param name="minX">(opc)</param>
 /// <param name="minY">(opc)</param>
 /// <returns></returns>
-Punkt LosPunkt(int maxX, int maxY, int minX = MIN_X, int minY = MIN_Y ) { // wylosuj punkt z zakresu
+Punkt LosPunkt(int maxX, int maxY, int minX = 0, int minY = 1 ) { // wylosuj punkt z zakresu
 	int x, y;
 	x = minX + (rand() % (maxX - minX + 1));
 	y = minY + (rand() % (maxY - minY + 1));
@@ -162,8 +162,8 @@ void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0,char
 }
 
 bool CzyWZakresieOkna(int x, int y) {
-	int maxX = KonsolaX - 1, maxY = KonsolaY - 3;	// maksymalne wartości współrzednych konsoli
-	if (x < MIN_X || x > maxX || y < MIN_Y || y > maxY) return false;
+	int maxX = KonsolaX() - 1, maxY = KonsolaY() - 3;	// maksymalne wartości współrzednych konsoli
+	if (x < 0 || x > maxX || y < 1 || y > maxY) return false;
 	return true;
 }
 
@@ -312,14 +312,14 @@ void Trojkat::Losuj() {
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty[i] = LosPunkt(KonsolaX - 5, KonsolaY - 5);
+			_punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty.push_back(LosPunkt(KonsolaX - 5, KonsolaY - 5));
+			_punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5));
 		}
 	}
 	
@@ -355,9 +355,9 @@ void Prostokat::Losuj() {
 	int dx, dy;
 	do
 	{
-		pktStart = LosPunkt(KonsolaX - 30, KonsolaY - 20);
-		int maxDx = KonsolaX - pktStart.x();
-		int maxDy = KonsolaY - pktStart.y();
+		pktStart = LosPunkt(KonsolaX() - 30, KonsolaY() - 20);
+		int maxDx = KonsolaX() - pktStart.x();
+		int maxDy = KonsolaY() - pktStart.y();
 		dx = pktStart.x() + 2 + rand() % (maxDx - 2);
 		dy = pktStart.y() + 2 + rand() % (maxDy - 2);
 
@@ -493,8 +493,8 @@ void Okrag::Losuj() {
 
 	do // potwarzaj dopóki wylosowany okrąg nie będzie w poprawnym zakresie
 	{
-		_srodek = LosPunkt(KonsolaX-20, KonsolaY-10);
-		_promien = 2 + (rand() % ((KonsolaY/2) - 2 + 1));
+		_srodek = LosPunkt(KonsolaX() - 20, KonsolaY() - 10);
+		_promien = 2 + (rand() % ((KonsolaY() / 2) - 2 + 1));
 	} while (!CzySieMiesci(_srodek, _promien));
 	
 }
@@ -523,7 +523,7 @@ Polecenia zamienPolecenie(std::string in) {
 }
 
 void PrintError(std::string text) {
-	UstawKursor(0, KonsolaY - 1);
+	UstawKursor(0, KonsolaY() - 1);
 	std::cout << "\u001b[0;101m\a Error: " << text;
 	getchar();
 	printf("\033[A");
@@ -550,7 +550,7 @@ void NarysyjGornyPasek(std::vector<Figura*> _figury, std::vector<std::string> _f
 	}
 }
 void NarysujDolnyPasek(int _wybranaFigura) {
-	UstawKursor(0, KonsolaY - 1);
+	UstawKursor(0, KonsolaY() - 1);
 	std::cout << "\u001b[92;100m";
 	ClearLine(); // zapewnia cała linię w szarym kolorze
 
@@ -618,7 +618,7 @@ void WybierzFigure(std::vector<std::string> _komendy, std::vector<Figura*> _figu
 void UtworzFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _figury, std::vector<std::string>& _figuryNazwy) {
 	if (_komendy.size() >= 2)
 	{
-		if (_figury.size() == FIGUR_MAX)
+		if (_figury.size() == 6)
 		{
 			PrintError("Maksymalna ilosc figur!");
 		}
@@ -735,7 +735,6 @@ void PrzesunFigure(std::vector<std::string> _komendy, std::vector<Figura*>& _fig
 
 int main()
 {
-	PoznajWymiaryKonsoli();
 	system("cls");	// wymagane żeby działały kody ANSI
 	std::cout << "\u001b[0m";
 	srand(time(NULL));
