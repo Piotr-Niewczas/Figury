@@ -1,127 +1,16 @@
 ﻿#include <iostream>
 #include <stdio.h>
-//#include <math.h>		/* abs */
-#include <stdlib.h>     /* srand, rand */
 #include <time.h>		/* time */ 
 #include <sstream>		/* string stream */
 #include <vector>
-#include "pomocnicze.h"
+#include "figury.h"
 
 
 //dom rozmiar okna 120x30 znaków
 
 
 
-class Figura {
-private:
-	int _numer = 0;
-public:
-	virtual void Narysuj(int trybRysowania = 0) = 0;
-	void Ukryj() { std::cout << "\u001b[0m"; Narysuj(-1); }
-	void Wyszarz() { Narysuj(1); }
-	virtual int PrzesunCaly(int dx, int dy) = 0;
-	virtual void Losuj() = 0;
-	char _znakLinii = '*', _znakWierzch = '#';		// Znakwierzch / środka koła
-	int _kolorLinii = 0, _kolorWierzch = 0;			// domyślny biały
-	std::string _nazwa;
-	int GetNumer() { return _numer; }
-	void SetNumer(int nowyNr) { 
-		_numer = nowyNr;  
-		_kolorWierzch = 31 + nowyNr;
-		_kolorLinii = 91 + nowyNr;
-	}
-	bool _czyRysowano = false;
-};
 
-class Wielokat : public Figura {
-protected:
-	std::vector<Punkt> _punkty;
-	int _ileWierzch = 0;
-public:
-	Punkt GetPunkt(int index);
-	int SetPunkt(int index,int x, int y);
-	int GetWierzch() { return _ileWierzch; };
-	int PrzesunCaly(int dx, int dy) override;
-	void Narysuj(int trybRysowania = 0) override;
-};
-/// <summary>
-/// Zwraca Punkt z wielokąta o wskazanym indeksie
-/// </summary>
-/// <param name="index">Indeks punktu w wielokącie</param>
-/// <returns>Współżedne punktu, lub (-1,-1) jeżeli index poza zakresem</returns>
-Punkt Wielokat::GetPunkt(int index) {
-	if (index >= 0 && index < _ileWierzch) // sprawdza czy żądany punkt istnieje
-	{
-		return Punkt(-1, -1);
-	}
-	return _punkty[index];
-	
-}
-/// <summary>
-///	Ustawia punkt w nowym miejscu sprawdzająć poprawność współżędnych 
-/// </summary>
-/// <param name="index">Indeks punktu do przestawienia</param>
-/// <param name="x">Nowy X</param>
-/// <param name="y">Nowy Y</param>
-/// <returns>-1 jeżeli błąd, 0 jak sukcess</returns>
-int Wielokat::SetPunkt(int index,int x, int y) {
-	if (CzyWZakresieOkna(x,y))
-	{
-		Ukryj();
-		_punkty[index].Ustaw(x, y);
-		Narysuj();
-		return 0;
-	}
-	return -1;
-}
-/// <summary>
-/// Przesuwa Wielokąt o podane wartości
-/// </summary>
-/// <param name="dx"> Przesunięcie X na osi </param>
-/// <param name="dy"> Przesunięcie Y na osi </param>
-/// <returns>0 jeżeli udało się przesunąć, -1 jeżeli nie można przesunąć</returns>
-int Wielokat::PrzesunCaly(int dx, int dy) {
-
-	for (int i = 0; i < _ileWierzch; i++)
-	{
-		int finalX = _punkty[i].x() + dx;
-		int finalY = _punkty[i].y() + dy;
-		if (!CzyWZakresieOkna(finalX, finalY)) return -1; // jeżeli współrzedne poza zakresem, zwróć -1
-	}
-	for (int i = 0; i < _ileWierzch; i++)
-	{
-		Ukryj();
-		_punkty[i].Przesun(dx, dy); // przesuwa punkty
-		Narysuj();
-	}
-	return 0;
-}
-/// <summary>
-/// Rysyje Wielokąt nie sprawdzając czy jest to możliwe
-/// </summary>
-/// <param name="trybRysowania">0 - normalny, 1 - szary, -1 - ukryj</param>
-void Wielokat::Narysuj(int trybRysowania) {
-	_czyRysowano = true;
-	int KW = _kolorWierzch, KL = _kolorLinii; // kopia wartości kolorów
-	char ZW = _znakWierzch, ZL = _znakLinii;
-	if (trybRysowania == 1)
-	{
-		KW = szary, KL = szary; // jeżeli wielokąt ma być przeciemniony, zamień kolory na szary
-	}
-	if (trybRysowania == -1)
-	{
-		ZW = ' ';
-		ZL = ' ';
-		KW = 0;
-		KL = 0;
-	}
-
-	for (int i = 0; i < (_ileWierzch - 1); i++)
-	{
-		NarysujLinie(_punkty[i], _punkty[i + 1], KW, KL, ZW, ZL);
-	}
-	NarysujLinie(_punkty[_ileWierzch - 1], _punkty[0], KW, KL, ZW, ZL);
-}
 
 class Trojkat : public Wielokat
 {	
@@ -157,14 +46,14 @@ void Trojkat::Losuj() {
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5);
+			_punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0 ,1);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			_punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5));
+			_punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0 ,1));
 		}
 	}
 	
@@ -200,7 +89,7 @@ void Prostokat::Losuj() {
 	int dx, dy;
 	do
 	{
-		pktStart = LosPunkt(KonsolaX() - 30, KonsolaY() - 20);
+		pktStart = LosPunkt(KonsolaX() - 30, KonsolaY() - 20, 0 ,1);
 		int maxDx = KonsolaX() - pktStart.x();
 		int maxDy = KonsolaY() - pktStart.y();
 		dx = pktStart.x() + 2 + rand() % (maxDx - 2);
@@ -338,7 +227,7 @@ void Okrag::Losuj() {
 
 	do // potwarzaj dopóki wylosowany okrąg nie będzie w poprawnym zakresie
 	{
-		_srodek = LosPunkt(KonsolaX() - 20, KonsolaY() - 10);
+		_srodek = LosPunkt(KonsolaX() - 20, KonsolaY() - 10, 0 ,1);
 		_promien = 2 + (rand() % ((KonsolaY() / 2) - 2 + 1));
 	} while (!CzySieMiesci(_srodek, _promien));
 	

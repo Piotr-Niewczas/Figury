@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 
 int KonsolaX();
@@ -33,10 +34,10 @@ public:
 	void Ustaw(int x, int y);
 
 };
-Punkt LosPunkt(int maxX, int maxY, int minX = 0, int minY = 1);
-void UstawZnak(int x, int y, int Kolor, char Znak = '*');
-void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*');
-void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0, char znakWierzch = '*', char znakLinii = '*');
+Punkt LosPunkt(int maxX, int maxY, int minX, int minY);
+void UstawZnak(int x, int y, int Kolor, char Znak);
+void UstawZnak(Punkt pkt, int Kolor, char Znak);
+void NarysujLinie(Punkt A, Punkt B, int kolorWierzch, int kolorLini, char znakWierzch, char znakLinii);
 bool CzyWZakresieOkna(int x, int y);
 
 enum class Polecenia

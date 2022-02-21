@@ -1,6 +1,7 @@
 #include "pomocnicze.h"
 #include <windows.h>	/* ust kursora w konsoli, poznaj wymiary */
 #include <iostream>
+#include <stdlib.h> 
 
 int KonsolaX() {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -60,7 +61,7 @@ void Punkt::Ustaw(int x, int y) {
 /// <param name="minX">(opc)</param>
 /// <param name="minY">(opc)</param>
 /// <returns></returns>
-Punkt LosPunkt(int maxX, int maxY, int minX, int minY) { // wylosuj punkt z zakresu
+Punkt LosPunkt(int maxX, int maxY, int minX = 0, int minY = 1) { // wylosuj punkt z zakresu
 	int x, y;
 	x = minX + (rand() % (maxX - minX + 1));
 	y = minY + (rand() % (maxY - minY + 1));
@@ -74,7 +75,7 @@ void UstawKursor(int x, int y) {
 	c.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
-void UstawZnak(int x, int y, int Kolor, char Znak) {
+void UstawZnak(int x, int y, int Kolor, char Znak = '*') {
 	UstawKursor(x, y);
 	std::cout << "\u001b[" << Kolor << "m" << Znak;
 }
@@ -84,7 +85,7 @@ void UstawZnak(int x, int y, int Kolor, char Znak) {
 /// <param name="pkt">Miejsce wstawienia</param>
 /// <param name="Kolor">(opc) Kod ANSI koloru w którym znak ma byæ wstawiony</param>
 /// <param name="Znak">(opc) Znak do wstawienia</param>
-void UstawZnak(Punkt pkt, int Kolor, char Znak) {
+void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*') {
 	UstawZnak(pkt.x(), pkt.y(), Kolor, Znak);
 }
 
@@ -98,7 +99,7 @@ void UstawZnak(Punkt pkt, int Kolor, char Znak) {
 /// <param name="kolorLini">(opc) Kolor ANSI linii</param>
 /// <param name="znakWierzch">(opc) Znak Wierzcho³ka</param>
 /// <param name="znakLinii">(opc) Znak Linii</param>
-void NarysujLinie(Punkt A, Punkt B, int kolorWierzch, int kolorLini, char znakWierzch, char znakLinii)
+void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0, char znakWierzch = '*', char znakLinii = '*')
 {
 	int x0 = A.x(), y0 = A.y();
 	int x1 = B.x(), y1 = B.y();
