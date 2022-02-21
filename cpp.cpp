@@ -24,9 +24,7 @@ int KonsolaY() {
 } 
 
 void ClearLine() {
-	/*printf("\r");
-	printf(" ");
-	printf("\r");*/
+
 	printf("\33[2K\r");
 }
 
@@ -136,7 +134,7 @@ void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0,char
 	int sx = x0 < x1 ? 1 : -1;
 	int dy = -abs(y1 - y0);
 	int sy = y0 < y1 ? 1 : -1;
-	int err = dx + dy;  /* error value e_xy */
+	int err = dx + dy;
 	
 	while (true)
 	{
@@ -144,12 +142,12 @@ void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0,char
 		if (x0 == x1 && y0 == y1) break;
 		int e2 = 2 * err;
 		
-		if (e2 >= dy) { /* e_xy+e_x > 0 */
+		if (e2 >= dy) {
 			if (x0 == x1) break;
 			err += dy;
 			x0 += sx;
 		}
-		if (e2 <= dx) { /* e_xy+e_y < 0 */
+		if (e2 <= dx) {
 			if (y0 == y1) break;
 			err += dx;
 			y0 += sy;
@@ -750,9 +748,6 @@ int main()
 		NarysujDolnyPasek(_wybranaFigura);
 
 		std::vector<std::string> _komendy;
-		//poz 0 - polecenie
-		//poz 1,2 - arg
-
 		{ // przetwarzanie wejścia na vektor _komendy
 			std::string _rawIn;
 			getline(std::cin, _rawIn);
