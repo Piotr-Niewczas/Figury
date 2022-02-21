@@ -1,83 +1,19 @@
 ﻿#include <iostream>
-#include <windows.h>	/* ust kursora w konsoli, poznaj wymiary */
 #include <stdio.h>
 #include <math.h>		/* abs */
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>		/* time */ 
 #include <sstream>		/* string stream */
 #include <vector>
+#include "pomocnicze.h"
 
+#include <windows.h>	/* ust kursora w konsoli, poznaj wymiary */
 //dom rozmiar okna 120x30 znaków
 
 
-int KonsolaX() {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	return (csbi.srWindow.Right - csbi.srWindow.Left + 1);
-}
-int KonsolaY() {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	return (csbi.srWindow.Bottom - csbi.srWindow.Top + 1);
-} 
 
-void ClearLine() {
-
-	printf("\33[2K\r");
-}
-
-/// <summary>
-/// Definicje kodów kolorów ANSI
-/// </summary>
-enum Kolory{
-	czerwony = 31,
-	zielony = 32,
-	zolty = 33,
-	niebieski = 34,
-	magenta = 35,
-	cyan = 36,
-	reset = 0,
-	szary = 90
-};
-
-class Punkt
-{
-private:
-	int _x;
-	int _y;
-public:
-	int x() const { return _x; }
-	int y() const { return _y; }
-	Punkt(int X, int Y) {
-		_x = X;
-		_y = Y;
-	};
-	Punkt() {
-		_x = NULL;
-		_y = NULL;
-	};
-	/// <summary>
-	/// Przesuwa punkt bez sprawdzania czy wartosci sa w poprawnym zakresie
-	/// </summary>
-	/// <param name="dx"> Przesunięcie na osi X </param>
-	/// <param name="dy"> Przesunięcie na osi Y </param>
-	void Przesun(int dx, int dy) {
-		_x += dx;
-		_y += dy;
-	}
-	/// <summary>
-	/// Ustawia punkt w nowe miejsce bez sprawdzania poprawnosci wartosci
-	/// </summary>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	void Ustaw(int x, int y) {
-		_x = x;
-		_y = y;
-	}
-	
-};
 /// <summary>
 /// Losuje punkt o podanych parametrach
 /// </summary>
