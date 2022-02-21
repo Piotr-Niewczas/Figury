@@ -42,3 +42,29 @@ public:
 	void WyroznijPunkt(Punkt pkt);
 	void Losuj() override;
 };
+
+		// prostok¹t
+
+class Prostokat : public Wielokat {
+public:
+	Prostokat();
+	Prostokat(int numer);
+	Prostokat(Punkt gpPunkt, int dx, int dy, int numer);
+	void Losuj() override;
+};
+
+		// okr¹g
+
+class Okrag : public Figura {
+protected:
+	int _promien;
+	Punkt _srodek;
+public:
+	Okrag();
+	Okrag(int numer);
+	Okrag(Punkt srodek, int promien, int numer);
+	void Narysuj(int trybRysowania = 0) override;
+	bool CzySieMiesci(Punkt pkt, int r);
+	int PrzesunCaly(int dx, int dy) override;
+	void Losuj() override;
+};
