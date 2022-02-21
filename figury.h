@@ -31,3 +31,14 @@ public:
 	int PrzesunCaly(int dx, int dy) override;
 	void Narysuj(int trybRysowania = 0) override;
 };
+class Trojkat : public Wielokat
+{
+public:
+	Trojkat();
+	Trojkat(int numer);
+	Trojkat(Punkt A, Punkt B, Punkt C, int numer);
+	Trojkat(Punkt Punkty[3], int numer) : Trojkat(Punkty[0], Punkty[1], Punkty[2], numer) {};
+
+	void WyroznijPunkt(Punkt pkt);
+	void Losuj() override;
+};

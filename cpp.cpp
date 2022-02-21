@@ -9,56 +9,6 @@
 //dom rozmiar okna 120x30 znaków
 
 
-
-
-
-class Trojkat : public Wielokat
-{	
-public:
-	Trojkat() {
-		_ileWierzch = 3;
-		_nazwa = "Trojkat";
-	}
-	Trojkat(int numer) : Trojkat() {
-		SetNumer(numer);
-	}
-	Trojkat(Punkt A, Punkt B, Punkt C, int numer) : Trojkat(numer) {
-		_punkty.push_back(A);
-		_punkty.push_back(B);
-		_punkty.push_back(C);
-	};
-	Trojkat(Punkt Punkty[3],int numer) : Trojkat(Punkty[0], Punkty[1], Punkty[2], numer) {};
-	
-	void WyroznijPunkt(Punkt pkt) {
-		UstawZnak(pkt, 37, '#');
-	};
-	void Losuj() override;
-};
-/// <summary>
-/// Losuje trojkat, nie wyświetla go, ukrywa poprzedni jeżeli istniał
-/// </summary>
-void Trojkat::Losuj() {
-	if (_czyRysowano)
-	{
-		Ukryj();
-	}
-	if (_punkty.size() == 3)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			_punkty[i] = LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0 ,1);
-		}
-	}
-	else
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			_punkty.push_back(LosPunkt(KonsolaX() - 5, KonsolaY() - 5, 0 ,1));
-		}
-	}
-	
-}
-
 class Prostokat : public Wielokat {
 public:
 	Prostokat() { 
