@@ -51,3 +51,100 @@ void Punkt::Ustaw(int x, int y) {
 	_x = x;
 	_y = y;
 }
+
+/// <summary>
+/// Losuje punkt o podanych parametrach
+/// </summary>
+/// <param name="maxX"></param>
+/// <param name="maxY"></param>
+/// <param name="minX">(opc)</param>
+/// <param name="minY">(opc)</param>
+/// <returns></returns>
+Punkt LosPunkt(int maxX, int maxY, int minX, int minY) { // wylosuj punkt z zakresu
+	int x, y;
+	x = minX + (rand() % (maxX - minX + 1));
+	y = minY + (rand() % (maxY - minY + 1));
+
+	return Punkt(x, y);
+}
+
+void UstawKursor(int x, int y) {
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+void UstawZnak(int x, int y, int Kolor, char Znak) {
+	UstawKursor(x, y);
+	std::cout << "\u001b[" << Kolor << "m" << Znak;
+}
+/// <summary>
+/// Wstawia znak w okreœlonej pozycji na konsoli
+/// </summary>
+/// <param name="pkt">Miejsce wstawienia</param>
+/// <param name="Kolor">(opc) Kod ANSI koloru w którym znak ma byæ wstawiony</param>
+/// <param name="Znak">(opc) Znak do wstawienia</param>
+void UstawZnak(Punkt pkt, int Kolor, char Znak) {
+	UstawZnak(pkt.x(), pkt.y(), Kolor, Znak);
+}
+
+
+/// <summary>
+/// Algorytm Bresenhama rysowania linii miêdzy punktami 
+/// </summary>
+/// <param name="A">Punkt Pocz¹tkowy</param>
+/// <param name="B">Punkty Koñcowy</param>
+/// <param name="kolorWierzch">(opc) Kolor ANSI wierzcho³ków</param>
+/// <param name="kolorLini">(opc) Kolor ANSI linii</param>
+/// <param name="znakWierzch">(opc) Znak Wierzcho³ka</param>
+/// <param name="znakLinii">(opc) Znak Linii</param>
+void NarysujLinie(Punkt A, Punkt B, int kolorWierzch, int kolorLini, char znakWierzch, char znakLinii)
+{
+	int x0 = A.x(), y0 = A.y();
+	int x1 = B.x(), y1 = B.y();
+
+	int dx = abs(x1 - x0);
+	int sx = x0 < x1 ? 1 : -1;
+	int dy = -abs(y1 - y0);
+	int sy = y0 < y1 ? 1 : -1;
+	int err = dx + dy;
+
+	while (true)
+	{
+		UstawZnak(Punkt(x0, y0), kolorLini, znakLinii);
+		if (x0 == x1 && y0 == y1) break;
+		int e2 = 2 * err;
+
+		if (e2 >= dy) {
+			if (x0 == x1) break;
+			err += dy;
+			x0 += sx;
+		}
+		if (e2 <= dx) {
+			if (y0 == y1) break;
+			err += dx;
+			y0 += sy;
+		}
+	}
+
+	UstawZnak(A, kolorWierzch, znakWierzch);
+	UstawZnak(B, kolorWierzch, znakWierzch);
+
+}
+bool CzyWZakresieOkna(int x, int y) {
+	int maxX = KonsolaX() - 1, maxY = KonsolaY() - 3;	// maksymalne wartoœci wspó³rzednych konsoli
+	if (x < 0 || x > maxX || y < 1 || y > maxY) return false;
+	return true;
+}
+
+
+Polecenia zamienPolecenie(std::string in) {
+	if (in == "UTWORZ") return Polecenia::utworz;
+	else if (in == "LOSUJ" || in == "LOS") return Polecenia::los;
+	else if (in == "EDYTUJ" || in == "ZAZNACZ" || in == "WYBIERZ") return Polecenia::wybierz;
+	else if (in == "WYJDZ" || in == "ODZNACZ") return Polecenia::trybogolny;
+	else if (in == "USUN") return Polecenia::usun;
+	else if (in == "PRZESUN") return Polecenia::przesun;
+	else if (in == "ZAMKNIJ" || in == "ZAKONCZ" || in == "EXIT") return Polecenia::zamknijprogram;
+	return Polecenia::niepoprawne;
+}

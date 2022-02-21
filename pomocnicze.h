@@ -1,7 +1,9 @@
+#include <string>
 
 int KonsolaX();
 int KonsolaY();
 void ClearLine();
+void UstawKursor(int x, int y);
 /// <summary>
 /// Definicje kodów kolorów ANSI
 /// </summary>
@@ -31,3 +33,22 @@ public:
 	void Ustaw(int x, int y);
 
 };
+Punkt LosPunkt(int maxX, int maxY, int minX = 0, int minY = 1);
+void UstawZnak(int x, int y, int Kolor, char Znak = '*');
+void UstawZnak(Punkt pkt, int Kolor = 0, char Znak = '*');
+void NarysujLinie(Punkt A, Punkt B, int kolorWierzch = 0, int kolorLini = 0, char znakWierzch = '*', char znakLinii = '*');
+bool CzyWZakresieOkna(int x, int y);
+
+enum class Polecenia
+{
+	niepoprawne,
+	przesun,
+	los,
+	wybierz,
+	utworz,
+	trybogolny,
+	zamknijprogram,
+	usun
+
+};
+Polecenia zamienPolecenie(std::string in);
