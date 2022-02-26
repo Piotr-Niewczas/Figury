@@ -3,8 +3,7 @@
 #include <iostream>
 
 void Figura::Ukryj() { std::cout << "\u001b[0m"; Narysuj(-1); }
-void Figura::Wyszarz() { Narysuj(1); }
-int Figura::GetNumer() { return numer; }
+int Figura::Numer() { return numer; }
 void Figura::SetNumer(int nowyNr) {
 	numer = nowyNr;
 	SetKolorWierzch(31 + nowyNr);
@@ -40,20 +39,8 @@ void Figura::SetNazwa(std::string nazwa) {
 }
 		// Wielok¹t
 
-int Wielokat::GetWierzch() { return ileWierzch; };
-/// <summary>
-/// Zwraca Punkt z wielok¹ta o wskazanym indeksie
-/// </summary>
-/// <param name="index">Indeks punktu w wielok¹cie</param>
-/// <returns>Wspó³¿edne punktu, lub (-1,-1) je¿eli index poza zakresem</returns>
-Punkt Wielokat::GetPunkt(int index) {
-	if (index >= 0 && index < ileWierzch) // sprawdza czy ¿¹dany punkt istnieje
-	{
-		return Punkt(-1, -1);
-	}
-	return punkty[index];
+int Wielokat::LiczbaWierzch() { return ileWierzch; };
 
-}
 /// <summary>
 ///	Ustawia punkt w nowym miejscu sprawdzaj¹æ poprawnoœæ wspó³¿êdnych 
 /// </summary>
@@ -61,16 +48,7 @@ Punkt Wielokat::GetPunkt(int index) {
 /// <param name="x">Nowy X</param>
 /// <param name="y">Nowy Y</param>
 /// <returns>-1 je¿eli b³¹d, 0 jak sukcess</returns>
-int Wielokat::SetPunkt(int index, int x, int y) {
-	if (CzyWZakresieOkna(x, y))
-	{
-		Ukryj();
-		punkty[index].Ustaw(x, y);
-		Narysuj();
-		return 0;
-	}
-	return -1;
-}
+
 /// <summary>
 /// Przesuwa Wielok¹t o podane wartoœci
 /// </summary>
@@ -136,9 +114,6 @@ Trojkat::Trojkat(Punkt A, Punkt B, Punkt C, int numer) : Trojkat(numer) {
 	punkty.push_back(C);
 };
 
-void Trojkat::WyroznijPunkt(Punkt pkt) {
-	UstawZnak(pkt, 37, '#');
-};
 
 /// <summary>
 /// Losuje trojkat, nie wyœwietla go, ukrywa poprzedni je¿eli istnia³

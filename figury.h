@@ -13,7 +13,6 @@ private:
 public:
 	virtual void Narysuj(int trybRysowania = 0) = 0;
 	void Ukryj();
-	void Wyszarz();
 	virtual int PrzesunCaly(int dx, int dy) = 0;
 	virtual void Losuj() = 0;
 	char ZnakLinii();
@@ -22,7 +21,7 @@ public:
 	int KolorWierzch();
 	void SetKolorLinii(int kolor);
 	void SetKolorWierzch(int kolor);
-	int GetNumer();
+	int Numer();
 	void SetNumer(int nowyNr);
 	bool CzyRysowano();
 	void SetCzyRysowano(bool czyRysowano);
@@ -35,9 +34,7 @@ protected:
 	std::vector<Punkt> punkty;
 	int ileWierzch = 0;
 public:
-	Punkt GetPunkt(int index);
-	int SetPunkt(int index, int x, int y);
-	int GetWierzch();
+	int LiczbaWierzch();
 	int PrzesunCaly(int dx, int dy) override;
 	void Narysuj(int trybRysowania = 0) override;
 };
@@ -48,7 +45,6 @@ public:
 	Trojkat(int numer);
 	Trojkat(Punkt A, Punkt B, Punkt C, int numer);
 
-	void WyroznijPunkt(Punkt pkt);
 	void Losuj() override;
 };
 
@@ -58,7 +54,7 @@ class Prostokat : public Wielokat {
 public:
 	Prostokat();
 	Prostokat(int numer);
-	Prostokat(Punkt gpPunkt, int dx, int dy, int numer);
+	Prostokat(Punkt glPunkt, int dx, int dy, int numer);
 	void Losuj() override;
 };
 
@@ -73,7 +69,7 @@ public:
 	Okrag(int numer);
 	Okrag(Punkt srodek, int promien, int numer);
 	void Narysuj(int trybRysowania = 0) override;
-	bool CzySieMiesci(Punkt pkt, int r);
+	bool CzySieMiesci(Punkt srodek, int r);
 	int PrzesunCaly(int dx, int dy) override;
 	void Losuj() override;
 };

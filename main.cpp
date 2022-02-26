@@ -16,11 +16,11 @@ void NarysyjGornyPasek(std::vector<Figura*> _figury, std::vector<std::string> _f
 	{
 		if (_wybranaFigura == i)
 		{
-			std::cout << "\u001b[" << _figury[i]->GetNumer() + 31 << ";101m";
+			std::cout << "\u001b[" << _figury[i]->Numer() + 31 << ";101m";
 		}
 		else
 		{
-			std::cout << "\u001b[" << _figury[i]->GetNumer() + 31 << ";47m";
+			std::cout << "\u001b[" << _figury[i]->Numer() + 31 << ";47m";
 		}
 		//cout << "[" << i << "]: " << _figury[i]->_nazwa << " \t";
 		std::cout << "[" << i << "]: " << _figuryNazwy[i] << "\u001b[0;100m" << "    ";
