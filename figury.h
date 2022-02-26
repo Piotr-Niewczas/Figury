@@ -9,6 +9,7 @@ private:
 	char znakLinii = '*', znakWierzch = '#';		// Znakwierzch / œrodka ko³a
 	int kolorLinii = 0, kolorWierzch = 0;			// domyœlny bia³y
 	bool czyRysowano = false;
+	std::string nazwa;
 public:
 	virtual void Narysuj(int trybRysowania = 0) = 0;
 	void Ukryj();
@@ -21,11 +22,12 @@ public:
 	int KolorWierzch();
 	void SetKolorLinii(int kolor);
 	void SetKolorWierzch(int kolor);
-	std::string nazwa;
 	int GetNumer();
 	void SetNumer(int nowyNr);
 	bool CzyRysowano();
 	void SetCzyRysowano(bool czyRysowano);
+	std::string Nazwa();
+	void SetNazwa(std::string nazwa);
 };
 
 class Wielokat : public Figura {

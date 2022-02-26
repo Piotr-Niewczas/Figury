@@ -34,6 +34,10 @@ bool Figura::CzyRysowano() {
 void Figura::SetCzyRysowano(bool czyRysowano) {
 	this->czyRysowano = czyRysowano;
 }
+std::string Figura::Nazwa(){ return nazwa; };
+void Figura::SetNazwa(std::string nazwa) {
+	this->nazwa = nazwa;
+}
 		// Wielok¹t
 
 int Wielokat::GetWierzch() { return ileWierzch; };
@@ -120,7 +124,7 @@ void Wielokat::Narysuj(int trybRysowania) {
 
 Trojkat::Trojkat() {
 	ileWierzch = 3;
-	nazwa = "Trojkat";
+	SetNazwa("Trojkat");
 }
 Trojkat::Trojkat(int numer) : Trojkat()
 {
@@ -164,7 +168,7 @@ void Trojkat::Losuj() {
 		// prostok¹t
 
 Prostokat::Prostokat() {
-	nazwa = "Prostokat";
+	SetNazwa("Prostokat");
 	ileWierzch = 4;
 }
 Prostokat::Prostokat(int numer) : Prostokat() {
@@ -220,7 +224,7 @@ void Prostokat::Losuj() {
 
 Okrag::Okrag()
 {
-	nazwa = "Okrag";
+	SetNazwa("Okrag");
 }
 Okrag::Okrag(int numer) : Okrag() {
 	SetNumer(numer);

@@ -105,19 +105,19 @@ void UtworzFigure(std::vector<std::string> komendy, std::vector<Figura*>& figury
 			{
 				Trojkat* t = new Trojkat(figury.size());
 				figury.push_back(t);
-				figuryNazwy.push_back(t->nazwa);
+				figuryNazwy.push_back(t->Nazwa());
 			}
 			else if (komendy[1] == "O")
 			{
 				Okrag* o = new Okrag(figury.size());
 				figury.push_back(o);
-				figuryNazwy.push_back(o->nazwa);
+				figuryNazwy.push_back(o->Nazwa());
 			}
 			else if (komendy[1] == "P")
 			{
 				Prostokat* p = new Prostokat(figury.size());
 				figury.push_back(p);
-				figuryNazwy.push_back(p->nazwa);
+				figuryNazwy.push_back(p->Nazwa());
 			}
 			else
 			{
