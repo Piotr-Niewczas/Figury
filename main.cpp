@@ -212,7 +212,7 @@ void PrzesunFigure(std::vector<std::string> komendy, std::vector<Figura*>& figur
 
 int main()
 {
-	system("cls");	// wymagane żeby działały kody ANSI
+	system("cls");	// wymagane żeby działały kody ANSI 
 	std::cout << "\u001b[0m";
 	srand(time(NULL));
 	
